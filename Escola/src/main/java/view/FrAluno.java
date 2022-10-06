@@ -1,16 +1,29 @@
 package view;
 
+import controller.AlunoController;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
+import model.exceptions.AlunoException;
+
 /**
  *
  * @author Amauri
  */
 public class FrAluno extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrAluno
-     */
+    
+    AlunoController alunoController;
+    int idAlunoEditing = 0;
     public FrAluno() {
+        
+        alunoController = new AlunoController();
+        idAlunoEditing = -1;
+
         initComponents();
+        this.addMaskInFields();
     }
 
     /**
@@ -28,7 +41,6 @@ public class FrAluno extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-        edtCollegeID = new javax.swing.JTextField();
         edtGender = new javax.swing.JTextField();
         edtAge = new javax.swing.JTextField();
         lblName = new javax.swing.JLabel();
@@ -37,8 +49,9 @@ public class FrAluno extends javax.swing.JFrame {
         lblGender = new javax.swing.JLabel();
         edtName = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        grdProfessor = new javax.swing.JTable();
+        grdAluno = new javax.swing.JTable();
         lblYearOfEntry = new javax.swing.JLabel();
+        fEdtCollegeID = new javax.swing.JFormattedTextField();
         edtYearOfEntry = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -106,7 +119,7 @@ public class FrAluno extends javax.swing.JFrame {
         lblGender.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblGender.setText("Gênero:");
 
-        grdProfessor.setModel(new javax.swing.table.DefaultTableModel(
+        grdAluno.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -117,7 +130,7 @@ public class FrAluno extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(grdProfessor);
+        jScrollPane1.setViewportView(grdAluno);
 
         lblYearOfEntry.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblYearOfEntry.setText("Ano de Ingresso:");
@@ -131,30 +144,34 @@ public class FrAluno extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnNew, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                        .addComponent(btnNew, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                        .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                        .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
+                        .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblName)
-                            .addComponent(lblCollegeID)
-                            .addComponent(lblYearOfEntry))
-                        .addGap(18, 18, 18)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblName)
+                                    .addComponent(lblCollegeID))
+                                .addGap(61, 61, 61))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblYearOfEntry)
+                                .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(edtCollegeID)
-                            .addComponent(edtName, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(edtYearOfEntry))
+                            .addComponent(edtName, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                            .addComponent(fEdtCollegeID)
+                            .addComponent(edtYearOfEntry, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblGender)
                             .addComponent(lblAge))
-                        .addGap(18, 18, 18)
+                        .addGap(95, 95, 95)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(edtGender, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(edtAge, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -179,17 +196,17 @@ public class FrAluno extends javax.swing.JFrame {
                     .addComponent(lblGender)
                     .addComponent(edtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(edtGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCollegeID)
                     .addComponent(lblAge)
-                    .addComponent(edtCollegeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(edtAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(edtAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fEdtCollegeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblYearOfEntry)
                     .addComponent(edtYearOfEntry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -214,11 +231,29 @@ public class FrAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
+       try {
+            if (idAlunoEditing > 0) {
+                alunoController.updateAluno(idAlunoEditing, edtName.getText(), edtGender.getText(), edtAge.getText(), fEdtCollegeID.getText(), edtYearOfEntry.getText());
+            } else {
+                alunoController.registerAluno(edtName.getText(), edtGender.getText(), edtAge.getText(), fEdtCollegeID.getText(), edtYearOfEntry.getText());
+            }
+            //Comando bastante importante
+            this.idAlunoEditing = -1;
+
+            
+            alunoController.UpdateTable(grdAluno);
+
+            //this.habilitarCampos(false);
+            //this.limparCampos();
+        } catch (AlunoException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void edtGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtGenderActionPerformed
-        // TODO add your handling code here:
+         
+
     }//GEN-LAST:event_edtGenderActionPerformed
 
     /**
@@ -255,6 +290,16 @@ public class FrAluno extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void addMaskInFields(){
+        try{
+            MaskFormatter maskCollegeID = new MaskFormatter("####-##");
+            maskCollegeID.install(fEdtCollegeID);
+        } catch(ParseException ex){
+            Logger.getLogger(FrAluno.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
@@ -263,11 +308,11 @@ public class FrAluno extends javax.swing.JFrame {
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnSave;
     private javax.swing.JTextField edtAge;
-    private javax.swing.JTextField edtCollegeID;
     private javax.swing.JTextField edtGender;
     private javax.swing.JTextField edtName;
     private javax.swing.JTextField edtYearOfEntry;
-    private javax.swing.JTable grdProfessor;
+    private javax.swing.JFormattedTextField fEdtCollegeID;
+    private javax.swing.JTable grdAluno;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAge;
     private javax.swing.JLabel lblCollegeID;

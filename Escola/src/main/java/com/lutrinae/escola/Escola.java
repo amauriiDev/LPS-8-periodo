@@ -28,7 +28,7 @@ public class Escola {
            p.setName("Teste"+i);
            p.setGender('M');
            p.setAge(20+i);
-           p.setCpf("000.000.000-0"+i+1);
+           p.setCpf("000.000.000-0"+(i+1));
            ltsProfessors.add(p);
        }
        
