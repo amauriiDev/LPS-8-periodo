@@ -56,6 +56,7 @@ public class DisciplinaDAO implements IDao{
         try {
             connection = Persistence.getConnection();
             statement = connection.prepareStatement(sql);
+            
             //preenche a condição
             statement.setLong(1, disciplina.getId());
             
@@ -78,6 +79,7 @@ public class DisciplinaDAO implements IDao{
         try {
             
             statement = Persistence.getConnection().prepareStatement(sql);
+            
             statement.setInt(1, disciplina.getId());
             
             ResultSet resultset = statement.executeQuery();
